@@ -1,27 +1,46 @@
-var key = 'pk.eyJ1Ijoib3JvdXJiMjQiLCJhIjoiY2o3amk0OW1pMjBtdzMyb2VpNTFoMDNybSJ9.jBYCFJWvjLRiVqXihQwo8w';
-var mappa = new Mappa('MapboxGL', key);
-var options = {
-  lat: 42.0,
-  lng: -73.4,
-  zoom: 13.2,
-  style: "mapbox://styles/mapbox/dark-v9",
-  pitch: 90,
-  bearing: -20,
-  minZoom: 1,
-  renderWorldCopies: false
+let myMap;
+let canvas;
+let mappa = new Mappa('Leaflet');
+let data;
+
+// Lets change the map tiles to something with more contrast
+let options = {
+  lat: 34.0522,
+  lng: -118.2437,
+  zoom: 9,
+  style: "http://{s}.tile.osm.org/{z}/{x}/{y}.png"
 }
 
-var myMap;
-var canvas;
+function setup(){
+  canvas = createCanvas(windowWidth,windowHeight);
+  myMap = mappa.tileMap(options); 
+  myMap.overlay(canvas) 
 
-function setup() {
-  frameRate(60);
-  canvas = createCanvas(windowWidth, windowHeight);
-  canvas.parent('myContainer');
-  myMap = mappa.tileMap(options);
-  myMap.overlay(canvas);
+  // Only redraw the meteorites when the map change and not every frame.
+  myMap.onChange(callbackFunction);
 }
 
-function draw() {
-  clear(); 
+function draw(){
+}
+
+function callbackFunction(){
+  // Clear the canvas
+  clear();
+	
+      // Only draw them if the position is inside the current map bounds. We use a
+      // Leaflet method to check if the lat and lng are contain inside the current
+      // map. This way we draw just what we are going to see and not everything. See
+      // getBounds() in http://leafletjs.com/reference-1.1.0.html
+			
+      if (myMap.map.getBounds().contains({lat: options.lat, lng: options.lng})) {
+        // Transform lat/lng to pixel position
+				let la = myMap.latLngToPixel(options.lat, options.lng);
+  
+  
+				fill(0,255,0);
+        noStroke();
+
+        ellipse(la.x, la.y, 10, 10);
+      }
+
 }
