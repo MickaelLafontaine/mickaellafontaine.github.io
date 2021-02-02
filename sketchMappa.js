@@ -12,7 +12,7 @@ let options = {
 }
 
 function setup(){
-  canvas = createCanvas(windowWidth,windowHeight);
+  canvas = createCanvas(500,500);
   myMap = mappa.tileMap(options); 
   myMap.overlay(canvas) 
 
