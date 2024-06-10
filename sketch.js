@@ -22,6 +22,7 @@ function setup() {
 function draw() {
   background(200);
 
+  fill((255,0,0);
   text("coucou",mouseX,mouseY);
   
   // If it's time for a new point
